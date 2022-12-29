@@ -1,5 +1,7 @@
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
 import java.io.*;
 
 // TODO: CREATE AN UNSCRAMBLER
@@ -19,13 +21,30 @@ class Unscrambler {
         
         fScan.useDelimiter("\n");
 
-        String nextWord = fScan.next();
-        while (fScan.hasNext() != false) {
-            nextWord = fScan.next();
-            System.out.println(fScan.next());
-            for (Character c : 
-        }
 
+        TreeMap<String, TreeMap<Character, Integer>> bigMap = new TreeMap<String, TreeMap<Character, Integer>>();
+        
+        while (fScan.hasNext() != false) {
+            String nextWord = fScan.next();
+            char[] nextWordArray = nextWord.toCharArray();
+            TreeMap<Character, Integer> wordMap = new TreeMap<Character, Integer>();
+            for (Character c : nextWordArray) {
+                System.out.print(c);
+                if (wordMap.get(c) == null) {
+                    wordMap.put(c, 1);
+                } else {
+                    wordMap.put(c, (wordMap.get(c) + 1));
+                }
+            }
+
+            
+
+            // bigMap.put(nextWord, wordMap);
+        }
+        fScan.close();
+
+
+        
         
         // System.out.print("Please type the scrambled word: ");
         // String userInput = scan.nextLine();
