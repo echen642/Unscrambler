@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -15,21 +16,19 @@ class Unscrambler {
         Scanner scan = new Scanner(System.in);
         HashMap<Character, Integer> letterFreqDict = new HashMap<Character, Integer>();
 
-        // TODO: Convert all words in the file to a HashMap<Word, Map<Character, Integer>>
-        File file = new File("randomWords.txt");
+        // TODO: Convert all words in the file to a HashMap<Word, Map<Character, Integer>> (Done)
+        File file = new File("words_alpha.txt");
         Scanner fScan = new Scanner(file);
-        
-        fScan.useDelimiter("\n");
 
-
-        TreeMap<String, TreeMap<Character, Integer>> bigMap = new TreeMap<String, TreeMap<Character, Integer>>();
+        // ---- Creates our precomputed dictionary which we will rely on later ----
+        HashMap<String, HashMap<Character, Integer>> bigMap = new HashMap<String, HashMap<Character, Integer>>();
         
-        while (fScan.hasNext() != false) {
-            String nextWord = fScan.next();
+        while (fScan.hasNextLine() != false) {
+            String nextWord = fScan.nextLine();
+            nextWord = nextWord.toUpperCase();
             char[] nextWordArray = nextWord.toCharArray();
-            TreeMap<Character, Integer> wordMap = new TreeMap<Character, Integer>();
+            HashMap<Character, Integer> wordMap = new HashMap<Character, Integer>();
             for (Character c : nextWordArray) {
-                System.out.print(c);
                 if (wordMap.get(c) == null) {
                     wordMap.put(c, 1);
                 } else {
@@ -37,31 +36,41 @@ class Unscrambler {
                 }
             }
 
+
             
 
-            // bigMap.put(nextWord, wordMap);
+            bigMap.put(nextWord, wordMap);
         }
         fScan.close();
 
 
         
+        // This reads user input
+        System.out.print("Please type the scrambled word: ");
+        String userInput = scan.nextLine();
+        System.out.println("\n");
+        userInput = userInput.toUpperCase();
         
-        // System.out.print("Please type the scrambled word: ");
-        // String userInput = scan.nextLine();
-        // System.out.println("\n");
-        // userInput = userInput.toUpperCase();
-
-        // char[] userInputArray = userInput.toCharArray();
-        // for (Character c : userInputArray) {
-        //     if (letterFreqDict.get(c) == null) {
-        //         letterFreqDict.put(c, 1);
-        //     } else {
-        //         letterFreqDict.put(c, letterFreqDict.get(c) + 1);
-        //     }
-        // }
+        char[] userInputArray = userInput.toCharArray();
+        for (Character c : userInputArray) {
+            System.out.println(c);
+            if (letterFreqDict.get(c) == null) {
+                letterFreqDict.put(c, 1);
+            } else {
+                letterFreqDict.put(c, letterFreqDict.get(c) + 1);
+            }
+        }
 
         // System.out.println(letterFreqDict);
+        ArrayList<String> possibleWords = new ArrayList<String>();
+        for (String s : bigMap.keySet()) {
+            // System.out.println(s);
+            if (bigMap.get(s).equals(letterFreqDict)) {
+                possibleWords.add(s);
+            }
+        }
 
+        System.out.println(possibleWords);
         // TODO: READ THE WORDS_ALPHA TXT FILE USING FILEREADER
 
     }
