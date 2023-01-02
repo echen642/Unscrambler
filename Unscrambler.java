@@ -1,13 +1,11 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.TreeMap;
 import java.io.*;
 
 // TODO: CREATE AN UNSCRAMBLER
 
-class Unscrambler {
+public class Unscrambler {
     public static void main(String[] args) throws IOException{
         Scanner scan = new Scanner(System.in);
         HashMap<Character, Integer> letterFreqDict = new HashMap<Character, Integer>();
@@ -30,15 +28,10 @@ class Unscrambler {
                 }
             }
 
-
-            
-
             bigMap.put(nextWord, wordMap);
         }
         fScan.close();
 
-
-        // TODO: Implement a while loop to keep asking for scrambled words (Done)
         // This reads user input
         while (true) {
             System.out.print("Please type the scrambled word: ");
@@ -47,6 +40,7 @@ class Unscrambler {
             userInput = userInput.toUpperCase();
 
             if (userInput.equals("")) {
+                scan.close();
                 break;
             }
             
@@ -60,10 +54,8 @@ class Unscrambler {
                 }
             }
             
-            // System.out.println(letterFreqDict);
             ArrayList<String> possibleWords = new ArrayList<String>();
             for (String s : bigMap.keySet()) {
-                // System.out.println(s);
                 if (bigMap.get(s).equals(letterFreqDict)) {
                     possibleWords.add(s);
                 }
