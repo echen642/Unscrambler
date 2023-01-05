@@ -1,33 +1,35 @@
 import javax.swing.*;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
-import java.lang.reflect.GenericDeclaration;
-import java.util.ArrayList;
 import java.awt.Color;
-import java.awt.GridBagConstraints;
 import java.awt.BorderLayout;
 
 
 public class UserInterface {
-    
-    public static void main(String args[]) throws FileNotFoundException {
-        Unscrambler unscrambler = new Unscrambler();
+    private Unscrambler unscrambler;
+    private JFrame frame;
+    private JButton button1;
+    private JPanel panel;
+    private JLabel label;
+    private JTextField textField;
+    private JLabel returnLabel;
+
+    public UserInterface() throws FileNotFoundException {
+        unscrambler = new Unscrambler();
         unscrambler.setUp();
-        JFrame frame = new JFrame("Word Unscrambler");
-        JButton button1 = new JButton("Enter");
+        frame = new JFrame("Word Unscrambler");
+        button1 = new JButton("Enter");
 
-        
+        panel = new JPanel();
+        label = new JLabel("Enter Text:");
+        textField = new JTextField(31);     // Longest word in reference file is 31 letters
+        returnLabel = new JLabel();
 
-        JPanel panel = new JPanel();
-        JLabel label = new JLabel("Enter Text:");
-        JTextField textField = new JTextField(10);
-        JLabel returnLabel = new JLabel();
-        
-        returnLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-        returnLabel.setAlignmentY(JLabel.CENTER_ALIGNMENT);
+        returnLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        returnLabel.setVerticalAlignment(SwingConstants.CENTER);
+
+
 
         panel.add(label);
         panel.add(textField);
@@ -40,19 +42,29 @@ public class UserInterface {
         frame.add(BorderLayout.CENTER, returnLabel);
     
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(300, 300);
+        frame.setSize(600, 300);
 
         frame.setVisible(true);
-        
 
-        button1.addActionListener(new ActionListener() {
+        ActionListener processText = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String userInput = textField.getText();
-                String possibleWords = unscrambler.unscramble(userInput);
-                returnLabel.setText(possibleWords);
-                textField.setText(null);
+                processText();
             }
-        });
+        };
+
+        button1.addActionListener(processText);     // JButton generates an ActionEvent when the button is pressed
+        textField.addActionListener(processText);   // JTextField generates an ActionEvent when the "Enter" key is pressed
+    }
+
+    private void processText() {
+        String userInput = textField.getText();
+        String possibleWords = unscrambler.unscramble(userInput);
+        returnLabel.setText(possibleWords);
+        textField.setText(null);
+    }
+
+    public static void main(String args[]) throws FileNotFoundException {
+        new UserInterface();
     }
 
 }
