@@ -20,7 +20,10 @@ public class UserInterface {
     private JLabel returnLabel;
     private JMenuBar menuBar;
     private JMenu menu;
-    private JMenuItem fileExplorerItem;
+    private JMenuItem fileExplorerItemAdd;
+    private JMenuItem fileExplorerItemSetUp;
+    private JMenu setUpMenu;
+    private JMenu addMenu;
     private JFileChooser fileChooser;
 
     public UserInterface() throws FileNotFoundException {
@@ -39,7 +42,10 @@ public class UserInterface {
         returnLabel = new JLabel();
         menuBar = new JMenuBar();
         menu = new JMenu("File");
-        fileExplorerItem = new JMenuItem("Choose File");
+        fileExplorerItemAdd = new JMenuItem("Choose File");
+        fileExplorerItemSetUp = new JMenuItem("Choose File");
+        setUpMenu = new JMenu("Set Up");
+        addMenu = new JMenu("Add");
         fileChooser = new JFileChooser();
 
         // Return Label Settings
@@ -59,11 +65,20 @@ public class UserInterface {
         frame.add(BorderLayout.SOUTH, panel);
         frame.add(BorderLayout.CENTER, returnLabel);
 
+        // Setting Up AddItem and SetUpItem
+        addMenu.add(fileExplorerItemAdd);
+        setUpMenu.add(fileExplorerItemSetUp);
+
         // Adding MenuItem to Menu
-        menu.add(fileExplorerItem);
-        fileExplorerItem.addActionListener(new ActionListener() {
+        menu.add(addMenu);
+        menu.add(setUpMenu);
+
+
+
+
+        fileExplorerItemAdd.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (fileChooser.showOpenDialog(fileExplorerItem) == JFileChooser.APPROVE_OPTION) {
+                if (fileChooser.showOpenDialog(fileExplorerItemAdd) == JFileChooser.APPROVE_OPTION) {
                     System.out.println("Your selected file is: " + new File(fileChooser.getSelectedFile().getAbsolutePath()));
                     try {
                         unscrambler.add(fileChooser.getSelectedFile());
@@ -72,8 +87,21 @@ public class UserInterface {
                     }
                 } else {
                     System.out.println("The user has cancelled the operation.");
+                }                    
+            }
+        });
+
+        fileExplorerItemSetUp.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (fileChooser.showOpenDialog(fileExplorerItemSetUp) == JFileChooser.APPROVE_OPTION) {
+                    try {
+                        unscrambler.setUp(new File (fileChooser.getSelectedFile().getAbsolutePath()));                            
+                    } catch (FileNotFoundException e1) {
+                        e1.printStackTrace();
+                    }
+                } else {
+                    System.out.println("The user has cancelled the operation.");
                 }
-                
             }
         });
 
