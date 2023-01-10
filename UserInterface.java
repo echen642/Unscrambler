@@ -78,30 +78,13 @@ public class UserInterface {
 
         fileExplorerItemAdd.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (fileChooser.showOpenDialog(fileExplorerItemAdd) == JFileChooser.APPROVE_OPTION) {
-                    System.out.println("Your selected file is: " + new File(fileChooser.getSelectedFile().getAbsolutePath()));
-                    try {
-                        unscrambler.add(fileChooser.getSelectedFile());
-                    } catch (FileNotFoundException e1) {
-                        e1.printStackTrace();
-                    }
-                } else {
-                    System.out.println("The user has cancelled the operation.");
-                }                    
+                addReferenceFile();
             }
         });
 
         fileExplorerItemSetUp.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (fileChooser.showOpenDialog(fileExplorerItemSetUp) == JFileChooser.APPROVE_OPTION) {
-                    try {
-                        unscrambler.setUp(new File (fileChooser.getSelectedFile().getAbsolutePath()));                            
-                    } catch (FileNotFoundException e1) {
-                        e1.printStackTrace();
-                    }
-                } else {
-                    System.out.println("The user has cancelled the operation.");
-                }
+                setUpUnscrambler();
             }
         });
 
@@ -130,6 +113,31 @@ public class UserInterface {
         String possibleWords = unscrambler.unscramble(userInput);
         returnLabel.setText(possibleWords);
         textField.setText(null);
+    }
+
+    private void addReferenceFile() {
+        if (fileChooser.showOpenDialog(fileExplorerItemAdd) == JFileChooser.APPROVE_OPTION) {
+            System.out.println("Your selected file is: " + new File(fileChooser.getSelectedFile().getAbsolutePath()));
+            try {
+                unscrambler.add(fileChooser.getSelectedFile());
+            } catch (FileNotFoundException e1) {
+                e1.printStackTrace();
+            }
+        } else {
+            System.out.println("The user has cancelled the operation.");
+        }
+    }
+
+    private void setUpUnscrambler() {
+        if (fileChooser.showOpenDialog(fileExplorerItemSetUp) == JFileChooser.APPROVE_OPTION) {
+            try {
+                unscrambler.setUp(new File (fileChooser.getSelectedFile().getAbsolutePath()));                            
+            } catch (FileNotFoundException e1) {
+                e1.printStackTrace();
+            }
+        } else {
+            System.out.println("The user has cancelled the operation.");
+        }
     }
 
     public static void main(String args[]) throws FileNotFoundException {
